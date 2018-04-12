@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour {
 	{
 		if (SceneManager.GetActiveScene().name == "Game")
 		{
-			aud.enabled = true;
+            aud.enabled = true;
 		}
 	}
 
