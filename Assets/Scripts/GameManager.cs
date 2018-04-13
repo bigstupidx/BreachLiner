@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour {
 	public float startingAmount = 1f;
 	public float currentAmount;
 
-	public PlayGamesScript pg;
 
 	// Use this for initialization
 	void Start () 
@@ -34,7 +33,6 @@ public class GameManager : MonoBehaviour {
 		motor = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMotor> ();
 		sm = GameObject.FindGameObjectWithTag ("SM").GetComponent<SpawnManager> ();
 		am = GameObject.FindGameObjectWithTag ("AM").GetComponent<AudioManager> ();
-		pg = GameObject.FindGameObjectWithTag ("PG").GetComponent<PlayGamesScript> ();
 
 		highScoreText.text = PlayerPrefs.GetInt ("score").ToString ();
 		highScore = PlayerPrefs.GetInt ("score");
@@ -128,7 +126,6 @@ public class GameManager : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("score") < highScore)
 		{
 			PlayerPrefs.SetInt ("score", highScore);
-			PlayGamesScript.AddScoreToLeaderboard (SplitLinerResources.leaderboard_leaderboard, highScore);
 		}
 
 		SceneManager.LoadScene ("Game");
@@ -157,41 +154,5 @@ public class GameManager : MonoBehaviour {
 	public void SetUI()
 	{
 		slider.value = currentAmount;
-	}
-
-	public void ShowAchievements()
-	{
-		if (am.isSignedIn == true)
-		{
-			PlayGamesScript.ShowAchievementsUI ();
-		}
-		else
-		{
-			pg.ToActivate ();
-		}
-	}
-
-	public void ShowLeaderboards()
-	{
-		if (am.isSignedIn == true)
-		{
-			PlayGamesScript.ShowLeaderboardsUI ();
-		}
-		else
-		{
-			pg.ToActivate ();
-		}
-	}
-
-	public void SignInIfNot()
-	{
-		if (am.isSignedIn == true)
-		{
-			return;
-		}
-		else
-		{
-			pg.ToActivate ();
-		}
 	}
 }
