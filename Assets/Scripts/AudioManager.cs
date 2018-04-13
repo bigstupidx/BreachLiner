@@ -23,7 +23,11 @@ public class AudioManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (SceneManager.GetActiveScene().name == "Game")
+        if(aud == null)
+        {
+            aud = GameObject.FindGameObjectWithTag("SM").GetComponent<AudioSource>();
+        }
+		else if (SceneManager.GetActiveScene().name == "Game")
 		{
             aud.enabled = true;
 		}

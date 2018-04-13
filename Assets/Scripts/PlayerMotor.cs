@@ -51,7 +51,7 @@ public class PlayerMotor : MonoBehaviour {
 
 	private GameManager gm;
 	private AudioManager am;
-
+    private bool isTriggered;
 //	public float lookTimer = 0f;
 //	public float timerDuration = 2f;
 //	public float startingAmount = 1f;
@@ -81,7 +81,9 @@ public class PlayerMotor : MonoBehaviour {
 
 //		currentAmount = startingAmount;
 		isLookedAt = false;
-	}
+        isTriggered = false;
+
+    }
 
 	void OnEnable()
 	{
@@ -254,6 +256,7 @@ public class PlayerMotor : MonoBehaviour {
 			controller.Move (moveVector * Time.deltaTime);
 		}
 	}
+
 //	IEnumerator ExecuteAfterTime (float time)
 //	{
 //		yield return WaitForSeconds (time);
@@ -390,22 +393,90 @@ public class PlayerMotor : MonoBehaviour {
 				break;
 		}
 	}
-//	void OnCollisionEnter(Collision other)
-//	{
-//
-//		if (other.gameObject.tag == "pink")
-//		{
-//			//cols++;
-//			Destroy (this.gameObject);
-//		}
-//		else
-//			if (this.gameObject.tag == "blue")
-//			{
-//				//cols++;
-//				Destroy (other.gameObject);
-//				OnDeath();
-//			}
-//
-//
-//	}
+    void OnTriggerEnter(Collider other)
+    {
+        if(!isTriggered)
+        {
+            isTriggered = true;
+            StartCoroutine(TriggerTimer());
+            //cols = 0;
+            if (other.gameObject.tag == "pink")
+            {
+                //cols++;
+                gm.DecrementTemp();
+                other.GetComponent<WhenCollision>().OnHit();
+            }
+            else if (other.gameObject.tag == "red1")
+            {
+                //cols++;
+                //OnHit();
+                print("die");
+                OnDeath();
+            }
+            else if (other.gameObject.tag == "red2")
+            {
+                //cols++;
+
+                print("die");
+                OnDeath();
+            }
+            else if (other.gameObject.tag == "red3")
+            {
+                //cols++;
+                //OnHit();
+                print("die");
+                OnDeath();
+            }
+            else if (other.gameObject.tag == "blue1")
+            {
+                print("Bounce");
+                needBounce = true;
+                //			Destroy (this.gameObject);
+                tempPos = transform.position;
+                other.GetComponent<WhenCollision>().ExecuteAfter1(.1f);
+                //this.gameObject.SetActive(false);
+            }
+            else if (other.gameObject.tag == "blue2")
+            {
+                print("Bounce");
+                needBounce = true;
+                //Destroy (this.gameObject);
+                tempPos = transform.position;
+                other.GetComponent<WhenCollision>().ExecuteAfter1(.1f);
+                //this.gameObject.SetActive(false);
+            }
+            else if (other.gameObject.tag == "blue3")
+            {
+                print("Bounce");
+                needBounce = true;
+                //Destroy (this.gameObject);
+                tempPos = transform.position;
+                other.GetComponent<WhenCollision>().ExecuteAfter1(.1f);
+                //this.gameObject.SetActive(false);
+            }
+
+            //		if (cols > 1)
+            //		{
+            //			Destroy (blueGo);
+            //		}
+            //
+            //		if (this.gameObject.tag == "blue" && cols == 1)
+            //		{
+            //			
+            //			Destroy (other.gameObject);
+            //		}
+            //		else if (this.gameObject.tag == "pink" && cols == 1)
+            //		{
+            //			
+            //			Destroy (gameObject);
+            //		}
+        }
+
+    }
+
+    IEnumerator TriggerTimer()
+    {
+        yield return new WaitForSeconds(0.1f);
+        isTriggered = false;
+    }
 }

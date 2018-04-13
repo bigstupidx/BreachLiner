@@ -9,6 +9,8 @@ public class WhenCollision : MonoBehaviour {
 	//private GameObject blueGo;
 	//private GameObject pinkGo;
 	public PlayerMotor motor;
+    public Material redMaterial;
+    public GameObject flare;
 	private AudioSource aud;
 	private GameManager gm;
 	private SpawnManager sm;
@@ -16,7 +18,6 @@ public class WhenCollision : MonoBehaviour {
 	private GameObject red1;
 	private GameObject red2;
 	private GameObject red3;
-
 //	public Text tempScoreText;
                              //	public Text highScoreText;
 
@@ -48,90 +49,9 @@ public class WhenCollision : MonoBehaviour {
 //		red2 = GameObject.FindGameObjectWithTag ("red2");
 //		red3 = GameObject.FindGameObjectWithTag ("red3");
 	}
+    
 
-	void Update()
-	{
-		red1 = GameObject.FindGameObjectWithTag ("red1");
-		red2 = GameObject.FindGameObjectWithTag ("red2");
-		red3 = GameObject.FindGameObjectWithTag ("red3");
-	}
-
-	void OnTriggerEnter(Collider other) 
-	{
-		//cols = 0;
-		if (this.gameObject.tag == "pink")
-		{
-			//cols++;
-			gm.DecrementTemp ();
-			OnHit();
-		}
-		else if (this.gameObject.tag == "red1")
-		{
-			//cols++;
-			//OnHit();
-			print ("die");
-			motor.OnDeath();
-		}
-		else if (this.gameObject.tag == "red2")
-		{
-			//cols++;
-             
-			print ("die");
-			motor.OnDeath();
-		}
-		else if (this.gameObject.tag == "red3")
-		{
-			//cols++;
-			//OnHit();
-			print ("die");
-			motor.OnDeath();
-		}
-		else if(this.gameObject.tag == "blue1")
-		{
-			print ("Bounce");
-			motor.needBounce = true;
-//			Destroy (this.gameObject);
-			tempPos = transform.position;
-			StartCoroutine (ExecuteAfterTime1 (.2f));
-			//this.gameObject.SetActive(false);
-		}
-		else if(this.gameObject.tag == "blue2")
-		{
-			print ("Bounce");
-			motor.needBounce = true;
-			//Destroy (this.gameObject);
-			tempPos = transform.position;
-			StartCoroutine (ExecuteAfterTime2 (.2f));
-			//this.gameObject.SetActive(false);
-		}
-		else if(this.gameObject.tag == "blue3")
-		{
-			print ("Bounce");
-			motor.needBounce = true;
-			//Destroy (this.gameObject);
-			tempPos = transform.position;
-			StartCoroutine (ExecuteAfterTime3 (.2f));
-			//this.gameObject.SetActive(false);
-		}
-
-//		if (cols > 1)
-//		{
-//			Destroy (blueGo);
-//		}
-//
-//		if (this.gameObject.tag == "blue" && cols == 1)
-//		{
-//			
-//			Destroy (other.gameObject);
-//		}
-//		else if (this.gameObject.tag == "pink" && cols == 1)
-//		{
-//			
-//			Destroy (gameObject);
-//		}
-	}
-
-	void OnHit()
+	public void OnHit()
 	{
 		gameObject.SetActive(false);
 		aud.Play ();
@@ -141,33 +61,19 @@ public class WhenCollision : MonoBehaviour {
 	{
 		yield return new WaitForSeconds (time);
 
-		go = Instantiate (red1) as GameObject;
+        GetComponent<MeshRenderer>().material = redMaterial;
+        gameObject.tag = "red1";
+        flare.SetActive(true);
+		//go = Instantiate (red1) as GameObject;
 		//go.transform.SetParent (transform);
-		go.transform.position = tempPos;
-		this.gameObject.SetActive(false);
+		//go.transform.position = tempPos;
+		//this.gameObject.SetActive(false);
 		//Destroy (this.gameObject);
 	}
 
-	IEnumerator ExecuteAfterTime2 (float time)
-	{
-		yield return new WaitForSeconds (time);
-
-		go = Instantiate (red2) as GameObject;
-		//go.transform.SetParent (transform);
-		go.transform.position = tempPos;
-		this.gameObject.SetActive(false);
-		//Destroy (this.gameObject);
-	}
-
-	IEnumerator ExecuteAfterTime3 (float time)
-	{
-		yield return new WaitForSeconds (time);
-
-		go = Instantiate (red3) as GameObject;
-		//go.transform.SetParent (transform);
-		go.transform.position = tempPos;
-		this.gameObject.SetActive(false);
-		//Destroy (this.gameObject);
-	}
+    public void ExecuteAfter1(float time)
+    {
+        StartCoroutine(ExecuteAfterTime1(time));
+    }
 
 }
