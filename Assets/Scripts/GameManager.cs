@@ -155,4 +155,9 @@ public class GameManager : MonoBehaviour {
 	{
 		slider.value = currentAmount;
 	}
+
+    public void ShowLeaderboard()
+    {
+        Social.ShowLeaderboardUI();
+    }
 }

@@ -1,5 +1,5 @@
-lastUpgrade=00939
-proj.pluginVersion=0.9.39
+lastUpgrade=00938
+proj.pluginVersion=0.9.38
 proj.AppId=896018794690
 and.BundleId=com.Assassins.SplitLiner
 proj.classDir=Assets
