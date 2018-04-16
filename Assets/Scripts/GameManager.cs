@@ -10,9 +10,11 @@ public class GameManager : MonoBehaviour {
 	public PlayerMotor motor;
 	public SpawnManager sm;
 	public AudioManager am;
-
+    public GameObject tempScoreBackground;
+    public GameObject hiScoreBackground;
 	public Text tempScoreText;
 	public Text highScoreText;
+    public Text playingHighScoreText;
 
 	public int tempScore = 1;
 	public int highScore = 0;
@@ -36,10 +38,12 @@ public class GameManager : MonoBehaviour {
 
 		highScoreText.text = PlayerPrefs.GetInt ("score").ToString ();
 		highScore = PlayerPrefs.GetInt ("score");
+        playingHighScoreText.text = "Hi-Score:" + highScore;
 
-		if (am.reloadScore == false)
+        tempScore = 0;
+        if (am.reloadScore == false)
 		{
-			tempScore = highScore;
+			//tempScore = highScore;
 		}
 		else
 		if (am.reloadScore == true)
@@ -49,11 +53,10 @@ public class GameManager : MonoBehaviour {
 			Time.timeScale = 0.5f;
 			StartCoroutine (endSlomo(0.5f));
 		}
-
-		if (highScore == 0)
-		{
-			tempScore = 1;
-		}
+		//if (highScore == 0)
+		//{
+			//tempScore = 1;
+		//}
 
 		currentAmount = startingAmount;
 
@@ -71,7 +74,7 @@ public class GameManager : MonoBehaviour {
 
 
 
-		if (tempScore == 0)
+		/*(if (tempScore == 0)
 		{
 			Time.timeScale = 0.5f;
 			StartCoroutine (endSlomo (0.5f));
@@ -86,14 +89,19 @@ public class GameManager : MonoBehaviour {
 		if (tempScore < 0)
 		{
 			tempScore = 0;
-		}
+		}*/
 
 
 
 
-		tempScoreText.text = tempScore.ToString ();
+		tempScoreText.text = "Score:" + tempScore.ToString ();
 		am.tempScore = tempScore;
-
+        if (tempScore > highScore)
+        {
+            highScore = tempScore;
+            playingHighScoreText.text = "Hi-Score:" + highScore.ToString();
+        }
+            
 		if(motor.isLookedAt)
 		{
 			lookTimer += Time.deltaTime;
@@ -108,14 +116,17 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	public void DecrementTemp()
+	/*public void DecrementTemp()
 	{
 		tempScore--;
 		tempScoreText.color = Color.yellow;
 		tempScoreText.fontSize = 60;
 		StartCoroutine (ScoreWait (0.3f));
-	}
-
+	}*/
+    public void IncreaseScore()
+    {
+        tempScore++;
+    }
 	public void EndTheGame()
 	{
 		StartCoroutine (ExecuteAfterTime (1f));
@@ -155,7 +166,13 @@ public class GameManager : MonoBehaviour {
 	{
 		slider.value = currentAmount;
 	}
-
+    public void ActivateScoreUI()
+    {
+        tempScoreBackground.SetActive(true);
+        hiScoreBackground.SetActive(true);
+        //tempScoreText.gameObject.SetActive(true);
+        //playingHighScoreText.gameObject.SetActive(true);
+    }
     public void ShowLeaderBoard()
     {
         Social.ShowLeaderboardUI();

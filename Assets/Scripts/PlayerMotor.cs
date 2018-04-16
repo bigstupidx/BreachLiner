@@ -107,7 +107,9 @@ public class PlayerMotor : MonoBehaviour {
 		}
 		else
 		{
-			playButtonUI.SetActive (false);
+            gm.ActivateScoreUI();
+
+            playButtonUI.SetActive (false);
 			Vector3 cameraRelative = cam.InverseTransformPoint (transform.position);
 
 			if (cameraRelative.y > 0)
@@ -403,7 +405,7 @@ public class PlayerMotor : MonoBehaviour {
             if (other.gameObject.tag == "pink")
             {
                 //cols++;
-                gm.DecrementTemp();
+                gm.IncreaseScore();
                 other.GetComponent<WhenCollision>().OnHit();
             }
             else if (other.gameObject.tag == "red1")

@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 434ca3d3dad6e554281a9b1b575dfadd
+timeCreated: 1523901253
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Avayx Regular
+  fontNames:
+  - Avayx Regular
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
