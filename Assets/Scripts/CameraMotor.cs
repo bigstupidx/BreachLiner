@@ -17,6 +17,7 @@ public class CameraMotor : MonoBehaviour
 
 	public bool needAcc;
 	public Vector3 tempPos;
+    public float cameraTurnSpeed;
 
 	// Use this for initialization
 	void Start () 
@@ -65,7 +66,7 @@ public class CameraMotor : MonoBehaviour
 
 
 			controller.Move ((Vector3.up * speed) * Time.deltaTime);
-			transform.eulerAngles = new Vector3 (0, 0, 0);
+            transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0,0,0), cameraTurnSpeed * Time.deltaTime);
 		}
 	}
 }
