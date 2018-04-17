@@ -24,7 +24,7 @@
 
 public static class SplitLinerResources
 {
-        public const string leaderboard_hi_score = "CgkIiZvLxfscEAIQAQ"; // <GPGSID>
+        public const string leaderboard_best_score = "CgkIvMad1bMKEAIQAQ"; // <GPGSID>
 
 }
 

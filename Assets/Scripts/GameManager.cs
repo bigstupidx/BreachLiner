@@ -31,18 +31,18 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		motor = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMotor> ();
-		sm = GameObject.FindGameObjectWithTag ("SM").GetComponent<SpawnManager> ();
-		am = GameObject.FindGameObjectWithTag ("AM").GetComponent<AudioManager> ();
+		//motor = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMotor> ();
+		//sm = GameObject.FindGameObjectWithTag ("SM").GetComponent<SpawnManager> ();
+		//am = GameObject.FindGameObjectWithTag ("AM").GetComponent<AudioManager> ();
 
 		menu_highScoreText.text = PlayerPrefs.GetInt ("score").ToString ();
 		highScore = PlayerPrefs.GetInt ("score");
-        highScoreText.text = "Hi-Score:" + highScore.ToString();
+        highScoreText.text = "Best:" + highScore.ToString();
 
 
         tempScore = 0;
 
-        UpdateScoreUI();
+        
         if (am.reloadScore == false)
 		{
 			//tempScore = highScore;
@@ -61,8 +61,8 @@ public class GameManager : MonoBehaviour {
 		//}
 
 		currentAmount = startingAmount;
-
-	}
+        UpdateScoreUI();
+    }
 	
 	// Update is called once per frame
 	void Update () 
@@ -114,12 +114,14 @@ public class GameManager : MonoBehaviour {
 
     void UpdateScoreUI()
     {
-        scoreText.text = "Score:" + tempScore.ToString();
+        scoreText.text = tempScore.ToString();
+        scoreText.GetComponent<Animator>().SetTrigger("Score");
         am.tempScore = tempScore;
         if (tempScore > highScore)
         {
             highScore = tempScore;
-            highScoreText.text = "Hi-Score:" + highScore.ToString();
+            highScoreText.text = "Best:" + highScore.ToString();
+            
         }
     }
 
@@ -138,7 +140,8 @@ public class GameManager : MonoBehaviour {
     }
 	public void EndTheGame()
 	{
-		StartCoroutine (ExecuteAfterTime (1f));
+        
+        StartCoroutine (ExecuteAfterTime (1f));
 	}
 
 	public void OnGameEnd()
@@ -146,9 +149,13 @@ public class GameManager : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("score") < highScore)
 		{
 			PlayerPrefs.SetInt ("score", highScore);
-		}
-
-		SceneManager.LoadScene ("Game");
+            Debug.Log("High Score");
+            AppsFlyerMMP.HighScore();
+            GoogleManager.ReportScore(highScore);
+        }
+        Debug.Log("Game End");
+        AppsFlyerMMP.Score(tempScore);
+        SceneManager.LoadScene ("Game");
 		am.allowChance = true;
 	}
 

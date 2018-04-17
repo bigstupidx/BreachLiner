@@ -7,6 +7,8 @@ using UnityEngine.Advertisements;
 
 public class PlayerMotor : MonoBehaviour {
 
+    public static PlayerMotor instance;
+
 	private const float ACC_VALUE = 125f; 
 
 	public GameObject playButtonUI;
@@ -61,6 +63,7 @@ public class PlayerMotor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        instance = this;
 		controller = GetComponent<CharacterController> ();
 		controller.detectCollisions = false;
 
@@ -344,7 +347,7 @@ public class PlayerMotor : MonoBehaviour {
 		gameObject.SetActive (false);
 
 
-		if (am.allowChance == true)
+		if (am.allowChance == true && Application.internetReachability != NetworkReachability.NotReachable)
 		{
 			saveMe.SetActive (true);
 			isLookedAt = true;
@@ -352,6 +355,8 @@ public class PlayerMotor : MonoBehaviour {
 		else
 		{
 			gm.EndTheGame ();
+            
+            
 		}
 			
 
@@ -367,34 +372,17 @@ public class PlayerMotor : MonoBehaviour {
 		isLookedAt = false;
 		saveMe.SetActive (false);
 
-		if (Advertisement.IsReady ())
-		{
-			Advertisement.Show ("rewardedVideo", new ShowOptions(){resultCallback = HandleAdResult});
-		}
-//		am.reloadScore = true;
-//		SceneManager.LoadScene ("Game");
+        UnityAds.instance.ShowAd("rewardedVideo");
+
 	}
 
-	private void HandleAdResult(ShowResult result)
-	{
-		switch (result)
-		{
-			case ShowResult.Finished:
-				am.reloadScore = true;
-				am.allowChance = false;
-				SceneManager.LoadScene ("Game");
-				break;
+    public void SecondChance()
+    {
+        am.reloadScore = true;
+        am.allowChance = false;
+        SceneManager.LoadScene("Game");
+    }
 
-			case ShowResult.Skipped:
-				SceneManager.LoadScene ("Game");
-				break;
-
-			case ShowResult.Failed:
-				SceneManager.LoadScene ("Game");
-				Debug.Log ("Failed to launch ad");
-				break;
-		}
-	}
     void OnTriggerEnter(Collider other)
     {
         if(!isTriggered)

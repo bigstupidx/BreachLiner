@@ -18,9 +18,9 @@ public class AppsFlyerMMP : MonoBehaviour {
         AppsFlyer.trackAppLaunch ();
 #elif UNITY_ANDROID
         //Mandatory - set your Android package name
-        AppsFlyer.setAppID("com.Blast.Collider.Test");
+        AppsFlyer.setAppID("com.belizard.collider");
         //Mandatory - set your AppsFlyer’s Developer key.
-        AppsFlyer.init("aTYJZVwsYCTz8BbnbrDbxL", "AppsFlyerTrackerCallbacks");
+        AppsFlyer.init("aTYJZVwsYCTz8BbnbrDbxL");
 
         //AppsFlyer.setCustomerUserID("659231");
 
@@ -30,16 +30,21 @@ public class AppsFlyerMMP : MonoBehaviour {
 #endif
     }
     
-    public static void LevelCompleted()
+    public static void Score(int batch)
     {
 
-        Dictionary<string, string> levelCompleted = new Dictionary<string, string>();
-        levelCompleted.Add("quantity", "1");
-        AppsFlyer.trackRichEvent("level_completed", levelCompleted);
-        //AppsFlyer.loadConversionData("AppsFlyerTrackerCallbacks");
+        Dictionary<string, string> score = new Dictionary<string, string>();
+        score.Add("score", batch.ToString());
+        AppsFlyer.trackRichEvent("score", score);
 
-        //To get the callbacks
-        //AppsFlyer.createValidateInAppListener ("AppsFlyerTrackerCallbacks", "onInAppBillingSuccess", "onInAppBillingFailure");
+    }
+
+    public static void HighScore()
+    {
+
+        Dictionary<string, string> score = new Dictionary<string, string>();
+        score.Add("high_score", "1");
+        AppsFlyer.trackRichEvent("high_score", score);
 
     }
 

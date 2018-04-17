@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class GoogleManager : MonoBehaviour
 {
 
-    string androidLeaderboard = "CgkIiZvLxfscEAIQAQ";
+    string androidLeaderboard = "CgkIvMad1bMKEAIQAQ";
     string iosLeaderboard = "Replace This";
     static string leaderboard;
 
@@ -54,9 +54,9 @@ public class GoogleManager : MonoBehaviour
         });
     }
 
-    public static void ReportScore()
+    public static void ReportScore(int highscore)
     {
-        //Social.ReportScore(ScoreManager.Instance.HighScore, leaderboard, success => { if (success) { Debug.Log("score reported"); } else { Debug.Log("score report failed"); } });
+        Social.ReportScore(highscore, leaderboard, success => { if (success) { Debug.Log("score reported"); } else { Debug.Log("score report failed"); } });
     }
 
     public void LogOut()
