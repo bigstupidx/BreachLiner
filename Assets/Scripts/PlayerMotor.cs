@@ -78,7 +78,7 @@ public class PlayerMotor : MonoBehaviour {
 
 
 		explosionParticles = Instantiate (explosionPrefab).GetComponent<ParticleSystem> ();
-		explosionAudio = explosionParticles.GetComponent<AudioSource> ();
+		//explosionAudio = explosionParticles.GetComponent<AudioSource> ();
 
 		explosionParticles.gameObject.SetActive (false);
 
@@ -342,7 +342,7 @@ public class PlayerMotor : MonoBehaviour {
 		explosionParticles.gameObject.SetActive (true);
 
 		explosionParticles.Play ();
-		explosionAudio.Play ();
+		//explosionAudio.Play ();
 
 		gameObject.SetActive (false);
 
@@ -371,13 +371,14 @@ public class PlayerMotor : MonoBehaviour {
 	{
 		isLookedAt = false;
 		saveMe.SetActive (false);
-
+        gm.mainMusicPlayer.Stop();
         UnityAds.instance.ShowAd("rewardedVideo");
 
 	}
 
     public void SecondChance()
     {
+        Debug.Log("Second Chance");
         am.reloadScore = true;
         am.allowChance = false;
         SceneManager.LoadScene("Game");
@@ -394,7 +395,7 @@ public class PlayerMotor : MonoBehaviour {
             {
                 //cols++;
                 gm.IncreaseScore();
-                other.GetComponent<WhenCollision>().OnHit();
+                other.GetComponent<WhenCollision>().OnHit(gm.scoreSound);
             }
             else if (other.gameObject.tag == "red1")
             {
@@ -402,20 +403,7 @@ public class PlayerMotor : MonoBehaviour {
                 //OnHit();
                 print("die");
                 OnDeath();
-            }
-            else if (other.gameObject.tag == "red2")
-            {
-                //cols++;
-
-                print("die");
-                OnDeath();
-            }
-            else if (other.gameObject.tag == "red3")
-            {
-                //cols++;
-                //OnHit();
-                print("die");
-                OnDeath();
+                other.GetComponent<WhenCollision>().OnHit(gm.crashSound);
             }
             else if (other.gameObject.tag == "blue1")
             {
@@ -423,25 +411,9 @@ public class PlayerMotor : MonoBehaviour {
                 needBounce = true;
                 //			Destroy (this.gameObject);
                 tempPos = transform.position;
+                
                 other.GetComponent<WhenCollision>().ExecuteAfter1(.1f);
-                //this.gameObject.SetActive(false);
-            }
-            else if (other.gameObject.tag == "blue2")
-            {
-                print("Bounce");
-                needBounce = true;
-                //Destroy (this.gameObject);
-                tempPos = transform.position;
-                other.GetComponent<WhenCollision>().ExecuteAfter1(.1f);
-                //this.gameObject.SetActive(false);
-            }
-            else if (other.gameObject.tag == "blue3")
-            {
-                print("Bounce");
-                needBounce = true;
-                //Destroy (this.gameObject);
-                tempPos = transform.position;
-                other.GetComponent<WhenCollision>().ExecuteAfter1(.1f);
+                //other.GetComponent<WhenCollision>().OnHit(gm.bounceSound);
                 //this.gameObject.SetActive(false);
             }
 

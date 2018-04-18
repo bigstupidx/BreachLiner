@@ -27,6 +27,7 @@ public class WhenCollision : MonoBehaviour {
 	public GameObject go;
 
 	public Vector3 tempPos;
+    
 
 	void Awake()
 	{
@@ -51,14 +52,18 @@ public class WhenCollision : MonoBehaviour {
 	}
     
 
-	public void OnHit()
+	public void OnHit(AudioClip clip)
 	{
+        aud.clip = clip;
 		gameObject.SetActive(false);
 		aud.Play ();
 	}
 
 	IEnumerator ExecuteAfterTime1 (float time)
 	{
+        aud.clip = gm.bounceSound;
+        aud.Play();
+
 		yield return new WaitForSeconds (time);
 
         GetComponent<MeshRenderer>().material = redMaterial;

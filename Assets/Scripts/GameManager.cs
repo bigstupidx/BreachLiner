@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
-
 	public PlayerMotor motor;
 	public SpawnManager sm;
 	public AudioManager am;
@@ -18,7 +17,7 @@ public class GameManager : MonoBehaviour {
 	public int tempScore = 1;
 	public int highScore = 0;
 
-	public AudioSource powerUp;
+	public AudioSource mainMusicPlayer;
 
 	public Slider slider;
 
@@ -27,22 +26,33 @@ public class GameManager : MonoBehaviour {
 	public float startingAmount = 1f;
 	public float currentAmount;
 
+    public AudioClip scoreSound;
+    public AudioClip bounceSound;
+    public AudioClip crashSound;
+
+    public float maxSpeed;
+    public float speedIncrease;
+    public float speedIncreaseTime;
+
 
 	// Use this for initialization
 	void Start () 
 	{
-		//motor = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMotor> ();
-		//sm = GameObject.FindGameObjectWithTag ("SM").GetComponent<SpawnManager> ();
-		//am = GameObject.FindGameObjectWithTag ("AM").GetComponent<AudioManager> ();
+
+
+        motor = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMotor> ();
+		sm = GameObject.FindGameObjectWithTag ("SM").GetComponent<SpawnManager> ();
+		am = GameObject.FindGameObjectWithTag ("AM").GetComponent<AudioManager> ();
 
 		menu_highScoreText.text = PlayerPrefs.GetInt ("score").ToString ();
 		highScore = PlayerPrefs.GetInt ("score");
         highScoreText.text = "Best:" + highScore.ToString();
+        //mainMusicPlayer.Play();
 
 
         tempScore = 0;
-
         
+
         if (am.reloadScore == false)
 		{
 			//tempScore = highScore;
@@ -50,7 +60,8 @@ public class GameManager : MonoBehaviour {
 		else
 		if (am.reloadScore == true)
 		{
-			tempScore = am.tempScore;
+            Debug.Log("Reloading");
+            tempScore = am.tempScore;
 			motor.buttonEnabled = false;
 			Time.timeScale = 0.5f;
 			StartCoroutine (endSlomo(0.5f));
@@ -62,6 +73,8 @@ public class GameManager : MonoBehaviour {
 
 		currentAmount = startingAmount;
         UpdateScoreUI();
+        StartCoroutine(SpeedUp(speedIncreaseTime));
+        
     }
 	
 	// Update is called once per frame
@@ -178,7 +191,19 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = 1f;
 	}
 
-	public void SetUI()
+    IEnumerator SpeedUp(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        if(Time.timeScale <= maxSpeed)
+        {
+            Time.timeScale += speedIncrease;
+            StartCoroutine(SpeedUp(speedIncreaseTime));
+        }
+        
+    }
+
+    public void SetUI()
 	{
 		slider.value = currentAmount;
 	}
