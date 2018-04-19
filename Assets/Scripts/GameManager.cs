@@ -73,7 +73,6 @@ public class GameManager : MonoBehaviour {
 
 		currentAmount = startingAmount;
         UpdateScoreUI();
-        StartCoroutine(SpeedUp(speedIncreaseTime));
         
     }
 	
@@ -118,9 +117,10 @@ public class GameManager : MonoBehaviour {
 			SetUI ();
 		}
 
-		if (slider.value <= 0)
+		if (slider.value <= 0 && !UnityAds.instance.isAdShowing)
 		{
-			OnGameEnd ();
+            Invoke("OnGameEnd", 0.1f);
+			//OnGameEnd ();
 		}
 
 	}
@@ -191,18 +191,6 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = 1f;
 	}
 
-    IEnumerator SpeedUp(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        if(Time.timeScale <= maxSpeed)
-        {
-            Time.timeScale += speedIncrease;
-            StartCoroutine(SpeedUp(speedIncreaseTime));
-        }
-        
-    }
-
     public void SetUI()
 	{
 		slider.value = currentAmount;
@@ -216,6 +204,10 @@ public class GameManager : MonoBehaviour {
     }
     public void ShowLeaderBoard()
     {
+        if(motor.tutorial.gameObject.activeInHierarchy)
+        {
+            motor.ToggleTutorial();
+        }
         Social.ShowLeaderboardUI();
     }
 }

@@ -6,6 +6,7 @@ public class UnityAds : MonoBehaviour {
 
     public static UnityAds instance;
     public bool rewardZone;
+    public bool isAdShowing = false;
 
     void Awake()
     {
@@ -29,9 +30,9 @@ public class UnityAds : MonoBehaviour {
     public void ShowAd(string zone = "")
     {
 #if UNITY_EDITOR
-        StartCoroutine(WaitForAd());
+        //StartCoroutine(WaitForAd());
 #endif
-
+        isAdShowing = true;
         if (string.Equals(zone, ""))
             zone = null;
         else
@@ -57,7 +58,11 @@ public class UnityAds : MonoBehaviour {
             case ShowResult.Finished:
                 Debug.Log("Ad Finished. Rewarding player...");
                 if (rewardZone)
+                {
                     PlayerMotor.instance.SecondChance();
+                    isAdShowing = false;
+                }
+                    
                     
                 break;
             case ShowResult.Skipped:

@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour {
 	public bool allowChance = true;
 	public bool reloadScore = false;
 	public int tempScore;
+    public float tempSpeed;
 
 	public bool isSignedIn = false;
 	public bool askedOnce = false;

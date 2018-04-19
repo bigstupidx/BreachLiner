@@ -29,29 +29,35 @@ public class GoogleManager : MonoBehaviour
         {
             leaderboard = iosLeaderboard;
         }
-
+        Debug.Log("1");
 
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
+        Debug.Log("2");
         LogIn();
     }
 
     public void LogIn()
     {
-        Social.localUser.Authenticate((bool success) =>
+        if(!Social.localUser.authenticated)
         {
-            if (success)
+            Debug.Log("3");
+            Social.localUser.Authenticate((bool success) =>
             {
-                Debug.Log("login success");
-                Debug.Log(Social.localUser.id);
-                Debug.Log(Social.localUser.userName);
-            }
-            else
-            {
-                Debug.Log("login fail");
-            }
+                if (success)
+                {
+                    Debug.Log("login success");
+                    Debug.Log(Social.localUser.id);
+                    Debug.Log(Social.localUser.userName);
+                }
+                else
+                {
+                    Debug.Log("login fail");
+                }
 
-        });
+            });
+        }
+        
     }
 
     public static void ReportScore(int highscore)

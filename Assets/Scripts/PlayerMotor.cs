@@ -12,6 +12,7 @@ public class PlayerMotor : MonoBehaviour {
 	private const float ACC_VALUE = 125f; 
 
 	public GameObject playButtonUI;
+    public Image tutorial;
 
 	public GameObject saveMe;
 	public Slider slider;
@@ -93,6 +94,15 @@ public class PlayerMotor : MonoBehaviour {
 		gameOver = false;
 	}
 
+
+    public void ToggleTutorial()
+    {
+        
+        tutorial.gameObject.SetActive(!tutorial.gameObject.activeInHierarchy);
+        //AnimationController.instance.ToggleTutorialImage();
+
+    }
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -112,6 +122,7 @@ public class PlayerMotor : MonoBehaviour {
 		{
             gm.ActivateScoreUI();
 
+            ToggleTutorial();
             playButtonUI.SetActive (false);
 			Vector3 cameraRelative = cam.InverseTransformPoint (transform.position);
 
@@ -384,6 +395,11 @@ public class PlayerMotor : MonoBehaviour {
         SceneManager.LoadScene("Game");
     }
 
+    void Vibrate()
+    {
+        Handheld.Vibrate();
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if(!isTriggered)
@@ -402,12 +418,15 @@ public class PlayerMotor : MonoBehaviour {
                 //cols++;
                 //OnHit();
                 print("die");
+                Vibrate();
+                Invoke("Vibrate", 0.5f);
                 OnDeath();
                 other.GetComponent<WhenCollision>().OnHit(gm.crashSound);
             }
             else if (other.gameObject.tag == "blue1")
             {
                 print("Bounce");
+                Vibrate();
                 needBounce = true;
                 //			Destroy (this.gameObject);
                 tempPos = transform.position;

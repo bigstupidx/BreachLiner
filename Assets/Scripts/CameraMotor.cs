@@ -6,6 +6,7 @@ public class CameraMotor : MonoBehaviour
 {
 	private CharacterController controller;
 	public float speed = 10f;
+
 	public PlayerMotor motor;
 	private Transform lookAt;
 	private Vector3 startOffset;
@@ -22,12 +23,11 @@ public class CameraMotor : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		controller = GetComponent<CharacterController> ();
+        controller = GetComponent<CharacterController> ();
 		lookAt = GameObject.FindGameObjectWithTag ("Player").transform;
 		startOffset = transform.position - lookAt.position;
 
 		needAcc = motor.needCamAcc;
-
 	}
 	
 	// Update is called once per frame
@@ -69,4 +69,5 @@ public class CameraMotor : MonoBehaviour
             transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0,0,0), cameraTurnSpeed * Time.deltaTime);
 		}
 	}
+
 }
