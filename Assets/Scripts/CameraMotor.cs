@@ -20,7 +20,20 @@ public class CameraMotor : MonoBehaviour
 	public Vector3 tempPos;
     public float cameraTurnSpeed;
 
+    public Transform canvas;
+    public Transform canvasX;
+
 	// Use this for initialization
+
+	private void Awake()
+	{
+        if (Screen.width == 1125 && Screen.height == 2436)
+        {
+            canvas.gameObject.SetActive(false);
+            canvasX.gameObject.SetActive(true);
+            Camera.main.fieldOfView = 85;
+        }
+	}
 	void Start () 
 	{
         controller = GetComponent<CharacterController> ();
