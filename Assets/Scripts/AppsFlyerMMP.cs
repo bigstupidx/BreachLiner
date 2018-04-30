@@ -14,7 +14,7 @@ public class AppsFlyerMMP : MonoBehaviour {
         
         //Mandatory - set your apple app ID
         //NOTE: You should enter the number only and not the "ID" prefix
-        AppsFlyer.setAppID ("YOUR_APP_ID_HERE");
+        AppsFlyer.setAppID ("1373841647");
         AppsFlyer.trackAppLaunch ();
 #elif UNITY_ANDROID
         //Mandatory - set your Android package name

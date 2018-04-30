@@ -31,8 +31,8 @@ public class GoogleManager : MonoBehaviour
         }
         Debug.Log("1");
 
-        PlayGamesPlatform.DebugLogEnabled = true;
-        PlayGamesPlatform.Activate();
+        //PlayGamesPlatform.DebugLogEnabled = true;
+        //PlayGamesPlatform.Activate();
         Debug.Log("2");
         LogIn();
     }
@@ -68,7 +68,7 @@ public class GoogleManager : MonoBehaviour
     public void LogOut()
     {
         Debug.Log("LogOut");
-        ((PlayGamesPlatform)Social.Active).SignOut();
+        //((PlayGamesPlatform)Social.Active).SignOut();
     }
 
     
