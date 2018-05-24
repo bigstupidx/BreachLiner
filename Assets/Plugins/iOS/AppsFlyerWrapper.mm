@@ -170,6 +170,10 @@ extern "C" {
     const void mSetIsSandbox(bool isSandbox) {
         [AppsFlyerTracker sharedTracker].useReceiptValidationSandbox = isSandbox;
     }
+    
+    const void mIsStopTracking(bool isStopTracking) {
+        [AppsFlyerTracker sharedTracker].isStopTracking = isStopTracking;
+    }
 
     
     const void mGetConversionData() {
@@ -228,7 +232,7 @@ extern "C" {
     const void mSetDeviceTrackingDisabled(bool state) {
         [AppsFlyerTracker sharedTracker].deviceTrackingDisabled = state;
     }
-
+    
     const void mSetAdditionalData(const char *extraData){
         NSString *extraDatais = [NSString stringWithUTF8String:extraData];
         
@@ -244,10 +248,8 @@ extern "C" {
                 [oExtraData setObject:value forKey:key];
             }
         }
-
-        
         [[AppsFlyerTracker sharedTracker] setAdditionalData:oExtraData];
-
+        
     }
     
 

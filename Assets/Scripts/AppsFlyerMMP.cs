@@ -20,7 +20,7 @@ public class AppsFlyerMMP : MonoBehaviour {
         //Mandatory - set your Android package name
         AppsFlyer.setAppID("com.belizard.collider");
         //Mandatory - set your AppsFlyer’s Developer key.
-        AppsFlyer.init("aTYJZVwsYCTz8BbnbrDbxL");
+        AppsFlyer.init("aTYJZVwsYCTz8BbnbrDbxL", "AppsFlyerTrackerCallbacks");
 
         //AppsFlyer.setCustomerUserID("659231");
 
@@ -46,6 +46,13 @@ public class AppsFlyerMMP : MonoBehaviour {
         score.Add("high_score", "1");
         AppsFlyer.trackRichEvent("high_score", score);
 
+    }
+
+    public static void SaveMe()
+    {
+        Dictionary<string, string> save = new Dictionary<string, string>();
+        save.Add("save_me", "1");
+        AppsFlyer.trackRichEvent("save_me", save);
     }
 
 }
