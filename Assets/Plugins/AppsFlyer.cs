@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 /*
- v4.16.2
+ v4.16.4
 */
 public class AppsFlyer : MonoBehaviour {
-	
-	
-	#if UNITY_IOS && !UNITY_EDITOR
+
+
+#if UNITY_IOS && !UNITY_EDITOR
 	[DllImport("__Internal")]
 	private static extern void mTrackEvent(string eventName,string eventValue);
 	
@@ -62,6 +62,9 @@ public class AppsFlyer : MonoBehaviour {
 
 	[DllImport("__Internal")]
     private static extern void mSetDeviceTrackingDisabled(bool state);
+
+    [DllImport("__Internal")]
+    private static extern void mIsStopTracking(bool isStopTracking);
 
     [DllImport("__Internal")]
     public static extern void mSetAdditionalData(string extraData);
@@ -154,17 +157,21 @@ public class AppsFlyer : MonoBehaviour {
         mSetDeviceTrackingDisabled(state);
     }
 
-	public static void setAdditionalData(Dictionary<string, string> extraData) {	
-		string extraDataString = "";
-		foreach(KeyValuePair<string, string> kvp in extraData)
-		{
-			extraDataString += kvp.Key + "=" + kvp.Value + "\n";
-		}
-		
-		mSetAdditionalData(extraDataString);
-	}
+    public static void setAdditionalData(Dictionary<string, string> extraData) {    
+        string extraDataString = "";
+        foreach(KeyValuePair<string, string> kvp in extraData)
+        {
+            extraDataString += kvp.Key + "=" + kvp.Value + "\n";
+        }
+        
+        mSetAdditionalData(extraDataString);
+    }
 
-	#elif UNITY_ANDROID && !UNITY_EDITOR
+    public static void stopTracking(bool isStopTracking) {
+        mIsStopTracking(isStopTracking);
+    }
+
+#elif UNITY_ANDROID && !UNITY_EDITOR
 
 	private static AndroidJavaClass obj = new AndroidJavaClass ("com.appsflyer.AppsFlyerLib");
 	private static AndroidJavaObject cls_AppsFlyer = obj.CallStatic<AndroidJavaObject>("getInstance");
@@ -393,22 +400,33 @@ public class AppsFlyer : MonoBehaviour {
         cls_AppsFlyer.Call("setDeviceTrackingDisabled", state);
     }
 
-	public static void setAdditionalData(Dictionary<string, string> extraData){
-		using(AndroidJavaClass cls_UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
-			using(AndroidJavaObject cls_Activity = cls_UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity")) {
-				AndroidJavaObject convertedDict = ConvertHashMap (extraData);
-				cls_AppsFlyer.Call("setAdditionalData", convertedDict);
-			}
-		}	
-	}
+    public static void setAdditionalData(Dictionary<string, string> extraData){
+        using(AndroidJavaClass cls_UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
+            using(AndroidJavaObject cls_Activity = cls_UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity")) {
+                AndroidJavaObject convertedDict = ConvertHashMap (extraData);
+                cls_AppsFlyer.Call("setAdditionalData", convertedDict);
+            }
+        }   
+    }
 
-	#else
-	// Editor (API)
-	public static void validateReceipt(string publicKey, string purchaseData, string signature, string price, string currency, Dictionary<string,string> extraParams) {}
+    public static void stopTracking(bool isStopTracking) {
+        using(AndroidJavaClass cls_UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
+            using(AndroidJavaObject cls_Activity = cls_UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity")) {
+                AndroidJavaObject cls_Application = cls_Activity.Call<AndroidJavaObject>("getApplication");
+                cls_AppsFlyer.Call("stopTracking", isStopTracking, cls_Application);    
+            }
+        }
+    }
+
+
+#else
+    // Editor (API)
+    public static void validateReceipt(string publicKey, string purchaseData, string signature, string price, string currency, Dictionary<string,string> extraParams) {}
 	public static void validateReceipt(string productIdentifier, string price, string currency, string transactionId, Dictionary<string,string> additionalParametes) {}
 	public static void handlePushNotification(Dictionary<string, string> payload) {}
 	public static void registerUninstall(byte[] token) {}
 	public static void setCollectIMEI (bool shouldCollect) {}
+    public static void setCollectAndroidID (bool shouldCollect) {}
 	public static void createValidateInAppListener(string aObject, string callbackMethod, string callbackFailedMethod){}
 	public static void init(string devKey){}
 	public static void init(string devKey, string callbackObject){}
@@ -430,6 +448,7 @@ public class AppsFlyer : MonoBehaviour {
 	public static void updateServerUninstallToken(string token) {}
 	public static void setDeviceTrackingDisabled(bool state) {}
     public static void setAndroidIdData(string androidIdData) {}
+    public static void stopTracking(bool isStopTracking) {}
     public static void setAdditionalData(Dictionary<string, string> extraData) {}
 
 	// deprecated APIs

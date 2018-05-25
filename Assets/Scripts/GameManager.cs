@@ -34,11 +34,40 @@ public class GameManager : MonoBehaviour {
     public float speedIncrease;
     public float speedIncreaseTime;
 
+    public Color32 settingsColorOn;
+    public Color32 settingsColorOff;
+    public Image sound;
+    public Image vibrate;
+    public AudioListener gameSound;
 
-	// Use this for initialization
-	void Start () 
+
+    // Use this for initialization
+    void Start () 
 	{
-
+        if (!PlayerPrefs.HasKey("Sound"))
+        {
+            PlayerPrefs.SetInt("Sound", 1);
+            
+        }
+        else
+        {
+            if(PlayerPrefs.GetInt("Sound") == 0)
+            {
+                AudioListener.volume = 0;
+                sound.color = settingsColorOff;
+            }
+        }
+        if (!PlayerPrefs.HasKey("Vibrate"))
+        {
+            PlayerPrefs.SetInt("Vibrate", 1);
+        }
+        else
+        {
+            if (PlayerPrefs.GetInt("Vibrate") == 0)
+            {
+                vibrate.color = settingsColorOff;
+            }
+        }
 
         motor = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerMotor> ();
 		sm = GameObject.FindGameObjectWithTag ("SM").GetComponent<SpawnManager> ();
@@ -210,4 +239,53 @@ public class GameManager : MonoBehaviour {
         }
         Social.ShowLeaderboardUI();
     }
+
+    public void ToggleSounds()
+    {
+        if (!PlayerPrefs.HasKey("Sound"))
+        {
+            PlayerPrefs.SetInt("Sound", 1);
+            AudioListener.volume = 1;
+        }
+        else
+        {
+            if (PlayerPrefs.GetInt("Sound") == 0)
+            {
+                PlayerPrefs.SetInt("Sound", 1);
+                sound.color = settingsColorOn;
+                AudioListener.volume = 1;
+            }
+            else
+            {
+                PlayerPrefs.SetInt("Sound", 0);
+                sound.color = settingsColorOff;
+                AudioListener.volume = 0;
+            }
+        }
+    }
+
+    public void ToggleVibration()
+    {
+        if (!PlayerPrefs.HasKey("Vibrate"))
+        {
+            PlayerPrefs.SetInt("Vibrate", 1);
+        }
+        else
+        {
+            if (PlayerPrefs.GetInt("Vibrate") == 0)
+            {
+                PlayerPrefs.SetInt("Vibrate", 1);
+                vibrate.color = settingsColorOn;
+            }
+            else
+            {
+                PlayerPrefs.SetInt("Vibrate", 0);
+                vibrate.color = settingsColorOff;
+            }
+
+        }
+        
+    }
+
+
 }

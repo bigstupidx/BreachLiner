@@ -13,6 +13,7 @@ public class PlayerMotor : MonoBehaviour {
 
 	public GameObject playButtonUI;
     public Image tutorial;
+    public Transform settings;
 
 	public GameObject saveMe;
 	public Slider slider;
@@ -101,6 +102,11 @@ public class PlayerMotor : MonoBehaviour {
         tutorial.gameObject.SetActive(!tutorial.gameObject.activeInHierarchy);
         //AnimationController.instance.ToggleTutorialImage();
 
+    }
+
+    public void ToggleSettings()
+    {
+        settings.gameObject.SetActive(!settings.gameObject.activeInHierarchy);
     }
 
 	// Update is called once per frame
@@ -384,6 +390,7 @@ public class PlayerMotor : MonoBehaviour {
 		saveMe.SetActive (false);
         gm.mainMusicPlayer.Stop();
         UnityAds.instance.ShowAd("rewardedVideo");
+        AppsFlyerMMP.SaveMe();
 
 	}
 
@@ -397,7 +404,11 @@ public class PlayerMotor : MonoBehaviour {
 
     void Vibrate()
     {
-        Handheld.Vibrate();
+        if (PlayerPrefs.HasKey("Vibrate") && PlayerPrefs.GetInt("Vibrate") == 1)
+        {
+            Handheld.Vibrate();
+            Debug.Log("VIBRATE");
+        }
     }
 
     void OnTriggerEnter(Collider other)
